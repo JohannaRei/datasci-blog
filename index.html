@@ -18,165 +18,173 @@
   	</section>
   	<section class="container">
     		<div class="col-sm-8 col-sm-offset-2">
-			<div class="row text-center">
+			   <div class="row text-center">
     				<h2>Introduction</h2>
-				<p>Every commuter knows that weather can have a huge effect on whether public transport schedules hold up on any given time. Especially here in Finland where the weather can be unpredictable at times. We decided to figure out which factors affect whether buses run on time or not on any given day.</p>
+				    <p>Every commuter knows that weather can have a huge effect on whether public transport schedules hold up on any given time. Especially here in Finland where the weather can be unpredictable at times. We decided to figure out which factors affect whether buses run on time or not on any given day.</p>
 				
-				<h2>The data</h2>
-				
-				<h4>Data sources and collection</h4>
-				<p>We decided to use <a target="_blank" href="http://dev.hsl.fi/live/">HSL Live API</a> data. Since they don't offer datasets, we built a script to collect the live data every minute over the course of 13 days, starting from October 10th and ending on the 23rd.</p>
-				<p>On top of public transport data, we also collected weather data from Helsinki with the <a target="_blank" href="https://darksky.net/dev">DarkSky API</a>. Weather data was collected every 20 minutes over the same period as the HSL data.</p>
+				    <h2>Data sources and collection</h2>
+				    <p>We decided to use <a target="_blank" href="http://dev.hsl.fi/live/">HSL Live API</a> data. Since they don't offer datasets, we built a script to collect the live data every minute over the course of 13 days, starting from October 10th and ending on the 23rd.</p>
+				    <p>On top of public transport data, we also collected weather data from Helsinki with the <a target="_blank" href="https://darksky.net/dev">DarkSky API</a>. Weather data was collected every 20 minutes over the same period as the HSL data.</p>
     				
-				<h4>Data wrangling</h4>
-				At the end of our data collection, we had a huge amount of data. The HSL data in particular was quite big (3.5 Gb in total), so we selected 5 bus routes at (semi-)random. These were: 550 (travel time from start to end 60 min), 94N (33 min), 731 (50 min), 55 (25 min) and 83 (10 min).</p>
-				<h4>The routes</h4>
-				<p>
-				<figure>
-					<img id="route" src="550.PNG"/>
-					<figcaption>Line 550 (60 min)</figcaption>
-				</figure>
-				<figure>
-					<img id="route" src="94N.PNG"/>
-					<figcaption>Line 94N (33 min)</figcaption>
-				</figure>
-				<figure>
-					<img id="route" src="731.PNG"/>
-					<figcaption>731 (50 min)</figcaption>
-				</figure>
-				<figure>
-					<img id="route" src="55.PNG"/>
-					<figcaption>55 (25 min)</figcaption>
-				<figure>	
-					<img id="route" src="83.PNG"/>
-					<figcaption>83 (10 min)</figcaption>
-				</figure>
-				</p>
-				<h2>The results</h2>
-			<div class="centered">
-			<style>
-			.dataframe thead tr:only-child th {
-    			text-align: right;
-			}
+				    <h2>Data wrangling</h2>
+				    At the end of our data collection, we had a huge amount of data. The HSL data in particular was quite big (3.5 Gb in total), so we selected 5 bus routes at (semi-)random. The chosen routes are shown below.</p>
+				    <h4>The routes</h4>
 
-			.dataframe thead th {
-    			text-align: left;
-			}
+					  <img id="route" src="550.PNG"/>
+            <p>Route 550 (60 min total)</p>
 
-			.dataframe tbody tr th {
-    			vertical-align: top;
-			}
-			</style>
-			<table border="1" class="dataframe">
+					  <img id="route" src="94N.PNG"/><img id="route" src="731.PNG"/>
+            <p>Routes 94N (33 min) and 731 (50 min)</p>
+
+					  <img id="route" src="55.PNG"/><img id="route" src="83.PNG"/>
+            <p>Routes 55 (25 min) and 83 (10 min)</p>
+
+        <h2>Data analysis</h2>
+        <h4>A discriminative classifier for determining whether a bus will be on time or late</h4>
+        <p>Our end goal is to determine whether the bus would be late or not. For this, we needed to chose a discriminative classifier. Below, you can see the accuracy of various methods we’ve attempted:</p>
+
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <td><strong>Method</strong></td>
+              <td><strong>Accuracy</strong></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Baseline (always guess late)</td>
+              <td><span style="color:red;">0.52</span></td>
+            </tr>
+            <tr>
+              <td>Logistic regression</td>
+              <td>0.53</td>
+            </tr>
+            <tr>
+              <td>Desision tree</td>
+              <td>0.93</td>
+            </tr>
+            <tr>
+              <td>Random forest</td>
+              <td><strong><span style="color:green;">0.95</span></strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The baseline is the accuracy when always guessing the most likely outcome (in this case, that the bus will be late). Any classifier worthwhile needs to beat this.</p>
+        <p>Logistic regression was the simplest classifier we’ve attempted, but as we can see, did not result in much improvement. The decision tree resulted in a dramatic improvement in accuracy, with a random forest ensemble method pushing the accuracy up to 95%. This is ultimately the model we selected.</p>
+        <p>The table below shows the importance of each feature, as determined by the model:</p>
+
+			<table class="table table-hover centered">
 				<thead>
-				<tr style="text-align: right;">
-    				<th></th>
-    				<th>importance</th>
-				</tr>
+				  <tr>
+    				<td><strong>Feature</strong></td>
+    				<td><strong>Importance</strong></td>
+				  </tr>
 				</thead>
 				<tbody>
 				<tr>
-    				<th>vehicle</th>
+    				<td>Vehicle</td>
     				<td>0.271155</td>
 				</tr>
 				<tr>
-    				<th>time</th>
+    				<td>Time</td>
     				<td>0.159677</td>
 				</tr>
 				<tr>
-    				<th>longitude</th>
+    				<td>Longitude</td>
     				<td>0.134082</td>
 				</tr>
 				<tr>
-    				<th>latitude</th>
+    				<td>Latitude</td>
     				<td>0.099188</td>
 				</tr>
 				<tr>
-    				<th>ozone</th>
+    				<td>Ozone</td>
     				<td>0.031733</td>
 				</tr>
 				<tr>
-    				<th>windSpeed</th>
+    				<td>WindSpeed</td>
     				<td>0.031116</td>
 				</tr>
 				<tr>
-    				<th>windGust</th>
+    				<td>WindGust</td>
     				<td>0.030285</td>
 				</tr>
 				<tr>
-    				<th>windBearing</th>
+    				<td>WindBearing</td>
     				<td>0.029432</td>
 				</tr>
 				<tr>
-    				<th>hourOfDay</th>
+    				<td>HourOfDay</td>
     				<td>0.028464</td>
 				</tr>
 				<tr>
-    				<th>apparentTemperature</th>
+    				<td>ApparentTemperature</td>
     				<td>0.025696</td>
 				</tr>
 				<tr>
-    				<th>dewPoint</th>
+    				<td>DewPoint</td>
     				<td>0.024440</td>
 				</tr>
 				<tr>
-    				<th>cloudCover</th>
+    				<td>CloudCover</td>
     				<td>0.024254</td>
 				</tr>
 				<tr>
-    				<th>line</th>
+    				<td>line</td>
     				<td>0.022343</td>
 				</tr>
 				<tr>
-    				<th>pressure</th>
+    				<td>pressure</td>
     				<td>0.021275</td>
 				</tr>
 				<tr>
-    				<th>temperature</th>
+    				<td>temperature</td>
     				<td>0.019657</td>
 				</tr>
 				<tr>
-    				<th>humidity</th>
+    				<td>humidity</td>
     				<td>0.015845</td>
 				</tr>
 				<tr>
-    				<th>visibility</th>
+    				<td>visibility</td>
     				<td>0.012251</td>
 				</tr>
 				<tr>
-    				<th>dayOfWeek</th>
+    				<td>dayOfWeek</td>
     				<td>0.011092</td>
 				</tr>
 				<tr>
-    				<th>uvIndex</th>
+    				<td>uvIndex</td>
     				<td>0.003230</td>
 				</tr>
 				<tr>
-    				<th>speed</th>
+    				<td>speed</td>
     				<td>0.001609</td>
 				</tr>
 				<tr>
-    				<th>precipProbability</th>
+    				<td>precipProbability</td>
     				<td>0.001498</td>
 				</tr>
 				<tr>
-    				<th>precipIntensity</th>
+    				<td>precipIntensity</td>
     				<td>0.001244</td>
 				</tr>
 				<tr>
-    				<th>precipType</th>
+    				<td>precipType</td>
     				<td>0.000433</td>
 				</tr>
 				</tbody>
 			</table>
-			</div>
+      <p>From this, we can infer several things. The first is that the most important feature for determining whether the bus is late is the vehicle itself. Each individual vehicle (whether it be a bus, train, or ferry) is given a unique vehicle ID. Why does the individual vehicle affect lateness so much? We’re not sure. Perhaps each vehicle is assigned to a specific driver. Since different drivers have different driving styles, it would explain a lot. Another possible explanation is simply that certain vehicles give faulty readings. This is something we’ve noticed when cleaning up the data. Many vehicles would consistently report delay values that made no sense. We removed these extreme outliers, but it’s possible that we were not thorough enough.</p>
+      <p>Another thing we can gather from these results is that latitude and longitude are important factors in determining whether a bus will be late. This makes sense since there are areas in the city that have higher traffic than others.</p>
+      <p>Ozone is another large factor, which seems odd at first glance. However, there is a very reasonable explanation for this. Ozone in the lower atmosphere is produced when sunlight reacts with hydrocarbons and nitrogen oxides produced by vehicle emissions. </p>
 
 				
     				<h4>Visualisations</h4>
 				
 				<h2>Future possibilities</h2>
 			</div>
-    		</div>
+    </div>
 	</section>
 </body>
 </html>
