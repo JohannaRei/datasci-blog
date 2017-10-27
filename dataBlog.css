@@ -19,25 +19,10 @@ figure {
 
 .foot {
 	background-color: LightSteelBlue;
-	position:relative;
+	position:absolute;
 	left:0;
 	right:0;
 	bottom:0;
 	padding-top: 10px;
 	width: 100%;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
-
-.centered {
-	margin-left: auto;
-	margin-right: auto;
 }
