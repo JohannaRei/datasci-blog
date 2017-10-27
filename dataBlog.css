@@ -1,0 +1,25 @@
+
+.jumbotron {
+	background-image: url(https://static.pexels.com/photos/210711/pexels-photo-210711.jpeg);
+	display: flex;
+	background-size: cover;
+  	height: 300px;
+  	align-items: center;
+  	background-position: center;
+}
+
+#otsikko {
+	color: white;
+	text-shadow: 2px 2px 2px #000000;
+}
+
+.foot {
+	background-color: LightSteelBlue;
+	position:absolute;
+	left:0;
+	right:0;
+	bottom:0;
+	padding-top: 5px;
+}
+
+
