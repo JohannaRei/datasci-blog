@@ -21,11 +21,20 @@
 			<div class="row text-center">
     				<h2>Introduction</h2>
 				<p>Every commuter knows that weather can have a huge effect on whether public transport schedules hold up on any given time. Especially here in Finland where the weather can be unpredictable at times. We decided to figure out which factors affect whether buses run on time or not on any given day.</p>
+				
 				<h2>The data</h2>
-				<p>We collected <a target="_blank" href="http://dev.hsl.fi/live/">HSL Live API</a> data every minute over 13 days.</p>
-				<p>On top of public transport data, we also collected weather data from Helsinki with the <a target="_blank" href="https://darksky.net/dev">DarkSky API</a>. Weather data was collected every 20 minutes over the data gathering period.</p>
-    				<h2>The results</h2>
+				
+				<h4>Data sources and collection</h4>
+				<p>We decided to use <a target="_blank" href="http://dev.hsl.fi/live/">HSL Live API</a> data. Since they don't offer datasets, we built a script to collect the live data every minute over the course of 13 days, starting from October 10th and ending on the 23rd.</p>
+				<p>On top of public transport data, we also collected weather data from Helsinki with the <a target="_blank" href="https://darksky.net/dev">DarkSky API</a>. Weather data was collected every 20 minutes over the same period as the HSL data.</p>
+    				
+				<h4>Data wrangling</h4>
+				At the end of our data collection, we had a huge amount of data. The HSL data in particular was quite big (3.5 Gb in total), so we selected 5 bus routes at (semi-)random. These were: 550 (travel time from start to end 60 min), 94N (33 min), 731 (50 min), 55 (25 min) and 83 (10 min).</p>
+				
+				<h2>The results</h2>
+				
     				<h4>Visualisations</h4>
+				
 				<h2>Future possibilities</h2>
 			</div>
     		</div>
