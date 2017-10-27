@@ -27,16 +27,16 @@
 				    <p>On top of public transport data, we also collected weather data from Helsinki with the <a target="_blank" href="https://darksky.net/dev">DarkSky API</a>. Weather data was collected every 20 minutes over the same period as the HSL data.</p>
     				
 				    <h2 class="otsikko2">Data wrangling</h2>
-				    At the end of our data collection, we had a huge amount of data. The HSL data in particular was quite big (3.5 Gb in total), so we selected 5 bus routes at (semi-)random. The chosen routes are shown below.</p>
+				    <p>At the end of our data collection, we had a huge amount of data. The HSL data in particular was quite big (3.5 Gb in total), so we selected 5 bus routes at (semi-)random. The chosen routes are shown below.</p>
 				    <h4>The routes</h4>
 
-					  <img id="route" src="550.PNG"/>
+					  <img alt="550" id="route" src="550.PNG"/>
             <p>Route 550 (60 min total)</p>
 
-					  <img id="route" src="94N.PNG"/><img id="route" src="731.PNG"/>
+					  <img alt="94N" id="route" src="94N.PNG"/><img alt="731" id="route" src="731.PNG"/>
             <p>Routes 94N (33 min) and 731 (50 min)</p>
 
-					  <img id="route" src="55.PNG"/><img id="route" src="83.PNG"/>
+					  <img alt="55" id="route" src="55.PNG"/><img alt="83" id="route" src="83.PNG"/>
             <p>Routes 55 (25 min) and 83 (10 min)</p>
 
             <p>After this, we removed all variables that were clearly faulty (such as long string values as delays and variables that didn't seem to be in use in most of the vehicles).</p>
@@ -183,12 +183,13 @@
 
 				<h2 class="otsikko2">Results</h2>
     				<h4>Visualisations</h4>
+        <p><img src="linez.png"/></p>
+        <p><img src="weezdayz.png"/></p>
+        <p><img src="hourz.png"/></p>
 				
 				<h2 class="otsikko2">Value of the work and future possibilities</h2>
         <p>To improve our model, we would need to collect a lot more data, for at least a year. Due to the time of year of our data collection (mid to end October) our data didn’t include extreme temperatures or snowy days. Now our data size was manageable and we could do the analyses on our laptops, but we would need distributed systems and a lot more computing power to analyze a full year’s worth of data.</p>
         <p>Train data could also be gathered from VR for further analysis. We didn’t try to predict lateness with these models but a real world app should take a weather forecast and use it for prediction. With our methods, you can already tell which lines are more prone to be late and when.</p>
-        <br />
-        <br />
         <br />
         <br />
 			</div>
@@ -197,6 +198,7 @@
 <footer class="foot">
   <p>Created as part of the Introduction to Data Science course at the University of Helsinki</p>
   <p>&copy; Sean Weber, Sanna Talola, Johanna Reinikainen</p>
+  <br />
 </footer>
 </body>
 </html>

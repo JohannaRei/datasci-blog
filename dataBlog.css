@@ -23,10 +23,14 @@
 	right:0px;
 	bottom:0px;
 	padding-top: 10px;
-	position: fixed;
 	width: 100%;
 	text-align: center;
 	font-size: 10px;
+}
+
+footer {
+	margin-bottom: 0;
+	padding-bottom: 0;
 }
 
 .centered {
