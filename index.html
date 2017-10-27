@@ -27,7 +27,7 @@
 				    <p>On top of public transport data, we also collected weather data from Helsinki with the <a target="_blank" href="https://darksky.net/dev">DarkSky API</a>. Weather data was collected every 20 minutes over the same period as the HSL data.</p>
     				
 				    <h2 class="otsikko2">Data wrangling</h2>
-				    <p>At the end of our data collection, we had a huge amount of data. The HSL data in particular was quite big (3.5 Gb in total), so we selected 5 bus routes at (semi-)random. The chosen routes are shown below.</p>
+				    <p>At the end of our data collection, we had a huge amount of data. The HSL data in particular was quite big (3.5 Gb in total). The data was also quite messy, probably due to different vehicles (our data included over 7000 unique vehicles) transmitting differing information, some didn't seem to be operational at all. Due to this, we could not use tram or train data, since most of it was corrupted. Our original plan had been to pick a route from each type of travel, but this was deemed impossible. Therefore we selected 5 bus routes at (semi-)random. The chosen routes are shown below.</p>
 				    <h4>The routes</h4>
 
 					  <img alt="550" id="route" src="550.PNG"/>
@@ -39,7 +39,7 @@
 					  <img alt="55" id="route" src="55.PNG"/><img alt="83" id="route" src="83.PNG"/>
             <p>Routes 55 (25 min) and 83 (10 min)</p>
 
-            <p>After this, we removed all variables that were clearly faulty (such as long string values as delays and variables that didn't seem to be in use in most of the vehicles).</p>
+            <p>After this, we removed all variables that were clearly faulty (such as long string values as delays and variables that didn't seem to be in use in most of the vehicles). We decided not to impute missing datapoints but instead remove corrupted data, since there was a lot of data. We noticed that some vehicles were repoting delays of over 80 minutes, which had to be a mistake. We think this was probably due to the location info being transmitted even when the bus was not on route or even standing at the bus depot. We filtered these values out by only including delays of more than -900 seconds (the bus being 15 minutes early) and 1800 seconds (30 min late).</p>
 
             <p>Then we combined the HSL data with the weather data for each timepoint. Below you can see the weather during the data collection period. Unfortunately there is not a lot of data from rainy days and no data from snowy days. If only we had collected data from a week later, precipitation may have had a bigger impact on whether a bus was late or not.</p>
             <p><img src="prec.png"/></p>
