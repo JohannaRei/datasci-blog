@@ -27,6 +27,14 @@
 	width: 100%;
 }
 
+.centered {
+	text-align: center;
+}
+
 img {
+	display: inline-block;
+}
+
+figure {
 	display: inline-block;
 }
