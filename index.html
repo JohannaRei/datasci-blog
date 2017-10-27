@@ -20,13 +20,13 @@
     		<div class="col-sm-8 col-sm-offset-2">
 			   <div class="row text-center">
     				<h2>Introduction</h2>
-				    <p>Every commuter knows that weather can have a huge effect on whether public transport schedules hold up on any given time. Especially here in Finland where the weather can be unpredictable at times. We decided to figure out which factors affect whether buses run on time or not on any given day.</p>
+				    <p>Every commuter knows that weather can have a huge effect on whether public transport schedules hold up on any given time. Especially here in Finland, where the weather can be very unpredictable at times. We decided to figure out which factors affect whether buses run on time or not on any given day.</p>
 				
-				    <h2>Data sources and collection</h2>
+				    <h2 class="otsikko2">Data sources and collection</h2>
 				    <p>We decided to use <a target="_blank" href="http://dev.hsl.fi/live/">HSL Live API</a> data. Since they don't offer datasets, we built a script to collect the live data every minute over the course of 13 days, starting from October 10th and ending on the 23rd.</p>
 				    <p>On top of public transport data, we also collected weather data from Helsinki with the <a target="_blank" href="https://darksky.net/dev">DarkSky API</a>. Weather data was collected every 20 minutes over the same period as the HSL data.</p>
     				
-				    <h2>Data wrangling</h2>
+				    <h2 class="otsikko2">Data wrangling</h2>
 				    At the end of our data collection, we had a huge amount of data. The HSL data in particular was quite big (3.5 Gb in total), so we selected 5 bus routes at (semi-)random. The chosen routes are shown below.</p>
 				    <h4>The routes</h4>
 
@@ -39,9 +39,11 @@
 					  <img id="route" src="55.PNG"/><img id="route" src="83.PNG"/>
             <p>Routes 55 (25 min) and 83 (10 min)</p>
 
-        <h2>Data analysis</h2>
+            <p>After this, we removed all variables that were clearly faulty (such as long string values as delays and variables that didn't seem to be in use in most of the vehicles).</p>
+
+        <h2 class="otsikko2">Data analysis</h2>
         <h4>A discriminative classifier for determining whether a bus will be on time or late</h4>
-        <p>Our end goal is to determine whether the bus would be late or not. For this, we needed to chose a discriminative classifier. Below, you can see the accuracy of various methods we’ve attempted:</p>
+        <p>Our end goal was to determine whether the bus would be late or not. For this, we needed to choose a discriminative classifier. Below, you can see the accuracy of various methods we attempted:</p>
 
         <table class="table table-hover">
           <thead>
@@ -69,8 +71,8 @@
             </tr>
           </tbody>
         </table>
-        <p>The baseline is the accuracy when always guessing the most likely outcome (in this case, that the bus will be late). Any classifier worthwhile needs to beat this.</p>
-        <p>Logistic regression was the simplest classifier we’ve attempted, but as we can see, did not result in much improvement. The decision tree resulted in a dramatic improvement in accuracy, with a random forest ensemble method pushing the accuracy up to 95%. This is ultimately the model we selected.</p>
+        <p>The baseline is the accuracy when always guessing the most likely outcome (in this case, that the bus will be late). Any classifier worthwhile needed to beat this.</p>
+        <p>Logistic regression was the simplest classifier we attempted, but as we can see, did not result in much improvement. The decision tree resulted in a dramatic improvement in accuracy, with a random forest ensemble method pushing the accuracy up to 95%. This is ultimately the model we selected.</p>
         <p>The table below shows the importance of each feature, as determined by the model:</p>
 
 			<table class="table table-hover centered">
@@ -179,12 +181,22 @@
       <p>Another thing we can gather from these results is that latitude and longitude are important factors in determining whether a bus will be late. This makes sense since there are areas in the city that have higher traffic than others.</p>
       <p>Ozone is another large factor, which seems odd at first glance. However, there is a very reasonable explanation for this. Ozone in the lower atmosphere is produced when sunlight reacts with hydrocarbons and nitrogen oxides produced by vehicle emissions. </p>
 
-				
+				<h2 class="otsikko2">Results</h2>
     				<h4>Visualisations</h4>
 				
-				<h2>Future possibilities</h2>
+				<h2 class="otsikko2">Value of the work and future possibilities</h2>
+        <p>To improve our model, we would need to collect a lot more data, for at least a year. Due to the time of year of our data collection (mid to end October) our data didn’t include extreme temperatures or snowy days. Now our data size was manageable and we could do the analyses on our laptops, but we would need distributed systems and a lot more computing power to analyze a full year’s worth of data.</p>
+        <p>Train data could also be gathered from VR for further analysis. We didn’t try to predict lateness with these models but a real world app should take a weather forecast and use it for prediction. With our methods, you can already tell which lines are more prone to be late and when.</p>
+        <br />
+        <br />
+        <br />
+        <br />
 			</div>
     </div>
 	</section>
+<footer class="foot">
+  <p>Created as part of the Introduction to Data Science course at the University of Helsinki</p>
+  <p>&copy; Sean Weber, Sanna Talola, Johanna Reinikainen</p>
+</footer>
 </body>
 </html>
