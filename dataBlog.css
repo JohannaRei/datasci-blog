@@ -15,7 +15,6 @@
 
 figure {
     float: left;
-    position: absolute;
     display: inline;
     height: 350px;
 }
