@@ -23,7 +23,7 @@
 				    <p>Every commuter knows that weather can have a huge effect on whether public transport schedules hold up on any given time. Especially here in Finland, where the weather can be very unpredictable at times. We decided to figure out which factors affect whether buses run on time or not on any given day.</p>
 				
 				    <h2 class="otsikko2">Data sources and collection</h2>
-				    <p>We decided to use <a target="_blank" href="http://dev.hsl.fi/live/">HSL Live API</a> data. Since they don't offer datasets, we built a script to collect the live data every minute over the course of 13 days, starting from October 10th and ending on the 23rd.</p>
+				    <p>We decided to use <a target="_blank" href="http://dev.hsl.fi/live/">HSL Live API</a> data. Since they don't offer ready-made datasets, we built a script to collect the live data every minute over the course of 13 days, starting from October 10th and ending on the 23rd.</p>
 				    <p>On top of public transport data, we also collected weather data from Helsinki with the <a target="_blank" href="https://darksky.net/dev">DarkSky API</a>. Weather data was collected every 20 minutes over the same period as the HSL data.</p>
     				
 				    <h2 class="otsikko2">Data wrangling</h2>
@@ -39,11 +39,18 @@
 					  <img alt="55" id="route" src="55.PNG"/><img alt="83" id="route" src="83.PNG"/>
             <p>Routes 55 (25 min) and 83 (10 min)</p>
 
-            <p>After this, we removed all variables that were clearly faulty (such as long string values as delays and variables that didn't seem to be in use in most of the vehicles).</p>
+            <p>After this, we removed all variables that were clearly faulty (such as long string values as delays and variables that didn't seem to be in use in most of the vehicles). Then we combined the HSL data with the weather data for each timepoint. Below you can see the weather during the data collection period. Unfortunately there is not a lot of data from rainy days and no data from snowy days. If only we had collected data from a week later, precipitation may have had a bigger impact on whether a bus was late or not.</p>
+            <p><img src="prec.png"/></p>
 
-        <h2 class="otsikko2">Data analysis</h2>
+        <h2 class="otsikko2">The causes for delays</h2>
+        <p>Below are some examples of the effects of some of the factors that seemed intuitively the most likely causes for variation in schedule reliablity based on intuition and experience. </p>
+        <p><img src="linez.png"/></p>
+        <p><img src="weezdayz.png"/></p>
+        <p><img src="hourz.png"/></p>
+
+        <h2 class="otsikko2">Data classification</h2>
         <h4>A discriminative classifier for determining whether a bus will be on time or late</h4>
-        <p>Our end goal was to determine whether the bus would be late or not. For this, we needed to choose a discriminative classifier. Below, you can see the accuracy of various methods we attempted:</p>
+        <p>Since the factors shown above didn't seem to have as much effect as we thought, we decided to do some further digging and try different methods. Our end goal was to determine whether a given bus would be late or not. For this, we needed to choose a discriminative classifier. Below, you can see the accuracy of various methods we attempted:</p>
 
         <table class="table table-hover">
           <thead>
@@ -132,47 +139,47 @@
     				<td>0.024254</td>
 				</tr>
 				<tr>
-    				<td>line</td>
+    				<td>Line</td>
     				<td>0.022343</td>
 				</tr>
 				<tr>
-    				<td>pressure</td>
+    				<td>Pressure</td>
     				<td>0.021275</td>
 				</tr>
 				<tr>
-    				<td>temperature</td>
+    				<td>Temperature</td>
     				<td>0.019657</td>
 				</tr>
 				<tr>
-    				<td>humidity</td>
+    				<td>Humidity</td>
     				<td>0.015845</td>
 				</tr>
 				<tr>
-    				<td>visibility</td>
+    				<td>Visibility</td>
     				<td>0.012251</td>
 				</tr>
 				<tr>
-    				<td>dayOfWeek</td>
+    				<td>DayOfWeek</td>
     				<td>0.011092</td>
 				</tr>
 				<tr>
-    				<td>uvIndex</td>
+    				<td>UvIndex</td>
     				<td>0.003230</td>
 				</tr>
 				<tr>
-    				<td>speed</td>
+    				<td>Speed</td>
     				<td>0.001609</td>
 				</tr>
 				<tr>
-    				<td>precipProbability</td>
+    				<td>PrecipProbability</td>
     				<td>0.001498</td>
 				</tr>
 				<tr>
-    				<td>precipIntensity</td>
+    				<td>PrecipIntensity</td>
     				<td>0.001244</td>
 				</tr>
 				<tr>
-    				<td>precipType</td>
+    				<td>PrecipType</td>
     				<td>0.000433</td>
 				</tr>
 				</tbody>
@@ -180,12 +187,6 @@
       <p>From this, we can infer several things. The first is that the most important feature for determining whether the bus is late is the vehicle itself. Each individual vehicle (whether it be a bus, train, or ferry) is given a unique vehicle ID. Why does the individual vehicle affect lateness so much? We’re not sure. Perhaps each vehicle is assigned to a specific driver. Since different drivers have different driving styles, it would explain a lot. Another possible explanation is simply that certain vehicles give faulty readings. This is something we’ve noticed when cleaning up the data. Many vehicles would consistently report delay values that made no sense. We removed these extreme outliers, but it’s possible that we were not thorough enough.</p>
       <p>Another thing we can gather from these results is that latitude and longitude are important factors in determining whether a bus will be late. This makes sense since there are areas in the city that have higher traffic than others.</p>
       <p>Ozone is another large factor, which seems odd at first glance. However, there is a very reasonable explanation for this. Ozone in the lower atmosphere is produced when sunlight reacts with hydrocarbons and nitrogen oxides produced by vehicle emissions. </p>
-
-				<h2 class="otsikko2">Results</h2>
-    				<h4>Visualisations</h4>
-        <p><img src="linez.png"/></p>
-        <p><img src="weezdayz.png"/></p>
-        <p><img src="hourz.png"/></p>
 				
 				<h2 class="otsikko2">Value of the work and future possibilities</h2>
         <p>To improve our model, we would need to collect a lot more data, for at least a year. Due to the time of year of our data collection (mid to end October) our data didn’t include extreme temperatures or snowy days. Now our data size was manageable and we could do the analyses on our laptops, but we would need distributed systems and a lot more computing power to analyze a full year’s worth of data.</p>
