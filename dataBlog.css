@@ -1,6 +1,6 @@
 
 .jumbotron {
-	background-image: url(https://static.pexels.com/photos/210711/pexels-photo-210711.jpeg);
+	background-image: url(/images/bus.jpeg);
 	display: flex;
 	background-size: cover;
   	height: 300px;
